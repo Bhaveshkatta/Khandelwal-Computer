@@ -54,6 +54,9 @@ html,body{
     justify-content: flex-start;
     z-index: 99;
 }
+#nav a{
+    text-decoration: none;
+}
 #nav img{
     height: 97px;
 }
