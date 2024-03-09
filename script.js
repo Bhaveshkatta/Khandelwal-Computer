@@ -63,20 +63,37 @@ gsap.from("#about-us, #about-us-in",{
 })
 
 
-gsap.from(".card",{
-    scale:0.8,
-    opacity:0, 
-    duration:1,
-    stagger:0.1,
-    scrollTrigger:{
-        trigger: ".card",
-        scroller:"body",
-        // markers: true,
-        start:"top 70%",
-        end:"top 65%",
-        scrub:1
-    }
-})
+gsap.registerPlugin(ScrollTrigger);
+
+const cards = document.querySelectorAll('.card');
+
+cards.forEach(card => {
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: card,
+      scroller: "body",
+      start: "top 70%",
+      end: "top 65%",
+      scrub: 1,
+      onUpdate: self => {
+        // Remove the rotation on update
+        card.style.transform = `scale(${self.progress * 0.8 + 1})`;
+      },
+    },
+  });
+
+  tl.fromTo(card, { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 1 });
+
+  card.addEventListener('mouseenter', () => {
+    // Add the rotation on hover
+    card.style.transform = 'rotate3d(-1,1,0,20deg)';
+  });
+
+  card.addEventListener('mouseleave', () => {
+    // Remove the rotation on mouse leave
+    card.style.transform = '';
+  });
+});
 
 
 gsap.from("#colon1",{
