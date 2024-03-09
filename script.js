@@ -68,18 +68,30 @@ gsap.registerPlugin(ScrollTrigger);
 const cards = document.querySelectorAll('.card');
 
 cards.forEach(card => {
-  gsap.from(card, {
-    scale: 0.8,
-    opacity: 0,
-    duration: 1,
+  const tl = gsap.timeline({
     scrollTrigger: {
       trigger: card,
       scroller: "body",
       start: "top 70%",
       end: "top 65%",
       scrub: 1,
-    //   markers: true,
+      onUpdate: self => {
+        // Remove the rotation on update
+        card.style.transform = `scale(${self.progress * 0.8 + 1})`;
+      },
     },
+  });
+
+  tl.fromTo(card, { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 1 });
+
+  card.addEventListener('mouseenter', () => {
+    // Add the rotation on hover
+    card.style.transform = 'rotate3d(-1,1,0,20deg)';
+  });
+
+  card.addEventListener('mouseleave', () => {
+    // Remove the rotation on mouse leave
+    card.style.transform = '';
   });
 });
 
